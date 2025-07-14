@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { CreateCharacterInterface } from "../helpers/interfaces/character.interface";
 import { createCharacterSchema } from "../helpers/validators/character.schema";
 import { Character } from "../entities/Character";
-import { findCharacterById, findUserCharacters, saveCharacter } from "../services/character.service";
-import { characterRepository } from "../config/repository/repository";
+import {findALlCharacters, findCharacterById, findUserCharacters, saveCharacter} from "../services/character.service";
 import { User } from "../entities/User";
 import { findUserById } from "../services/user.service";
 import { IPayload } from "../middlewares";
@@ -25,14 +24,7 @@ export const createCharacter = async (req: Request, res: Response) => {
             return;
         }
 
-        const character: Character = await saveCharacter(
-            name,
-            species,
-            character_class,
-            level,
-            user,
-            campaign
-        );
+        const character: Character = await saveCharacter(name, species, character_class, level, user, campaign);
         res.status(201).send({
             message: `Personaje creado con éxito, bienvenido ${character.name}!`,
         });
@@ -47,7 +39,7 @@ export const createCharacter = async (req: Request, res: Response) => {
 
 export const getAllCharacters = async (_req: Request, res: Response) => {
     try {
-        const characters: Character[] = await characterRepository.find();
+        const characters: Character[] = await findALlCharacters();
         if (characters.length === 0) {
             res.status(404).send({ message: "No hay personajes registrados." });
             return;

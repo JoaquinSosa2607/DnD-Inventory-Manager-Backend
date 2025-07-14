@@ -2,50 +2,30 @@ import { Request, Response } from "express";
 import { AddArmorInterface } from "../helpers/interfaces/armor.interface";
 import { addArmorSchema } from "../helpers/validators/armor.schema";
 import { Armor } from "../entities/Armor";
-import { armorRepository, characterRepository } from "../config/repository/repository";
-import { findArmorById } from "../services/armor.service";
 import { Character } from "../entities/Character";
-import { findCharacterById } from "../services/character.service";
+import {addArmorToCharacterInventory, findCharacterById} from "../services/character.service";
+import {findAllArmors} from "../services/armor.service";
 
 export const addArmorToInventory = async (req: Request, res: Response) => {
     try {
-        addArmorSchema.validate(req.body);
         const { armorId, characterId }: AddArmorInterface = req.body;
 
-        const armor: Armor | null = await findArmorById(armorId);
-        if (!armor) {
-            res.status(404).send({ message: "Armadura no registrada." });
-            return;
-        }
+        addArmorSchema.validate(req.body);
 
-        const character: Character | null = await findCharacterById(characterId);
-        if (!character) {
-            res.status(404).send({ message: "Personaje no registrado." });
-            return;
-        }
-
-        const alreadyHasArmor = character.armors.some((existingArmor) => existingArmor.id === armor.id);
-        if (alreadyHasArmor) {
-            res.status(400).send({ message: "El personaje ya tiene asignada esta armadura." });
-            return;
-        }
-
-        character.armors.push(armor);
-
-        await characterRepository.save(character);
+        await addArmorToCharacterInventory(armorId, characterId);
 
         res.status(200).send({ message: "Armadura agregada correctamente." });
     } catch (error) {
         if (error instanceof Error) {
-            res.status(500).send({ message: error.message });
+            res.status(500).send({ message: `Error interno del servidor. ${error.message}` });
+            return
         }
     }
 };
 
-
 export const getAllArmors = async (_req: Request, res: Response) => {
     try {
-        const armors: Armor[] = await armorRepository.find();
+        const armors: Armor[] = await findAllArmors();
         if(armors.length === 0) {
             res.status(404).send({ message: "No hay armaduras registradas." });
             return;

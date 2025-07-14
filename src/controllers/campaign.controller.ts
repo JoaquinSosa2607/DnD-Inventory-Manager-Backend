@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { Campaign } from "../entities/Campaign";
-import { campaignRepository } from "../config/repository/repository";
+import {findAllCampaigns} from "../services/campaign.service";
 
 export const getAllCampaigns = async (_req: Request, res: Response) => {
     try {
-        const campaigns: Campaign[] = await campaignRepository.find();
+        const campaigns: Campaign[] = await findAllCampaigns();
         if(campaigns.length === 0) {
             res.status(404).send({ message: "No existen campañas registradas." });
             return;
