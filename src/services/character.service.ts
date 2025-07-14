@@ -1,8 +1,10 @@
-import {characterRepository} from "../config/repository/repository";
+import {getEntityRepository} from "../config/repository/repository";
 import {Campaign} from "../entities/Campaign";
 import {Character} from "../entities/Character";
 import {User} from "../entities/User";
 import {Classes, Species} from "../helpers/enums";
+
+const characterRepository = getEntityRepository(Character)
 
 export async function saveCharacter(name: string, species: Species, character_class: Classes, level: number, user: User, campaign: Campaign) {
     const newCharacter: Character = new Character()

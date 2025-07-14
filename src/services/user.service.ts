@@ -1,6 +1,8 @@
-import {userRepository} from "../config/repository/repository";
 import {User} from "../entities/User";
 import {hashPassword} from "../helpers/handlePassword";
+import {getEntityRepository} from "../config/repository/repository";
+
+const userRepository = getEntityRepository(User);
 
 export async function signUp( firstname: string, lastname: string, email: string, password: string) {
     const user: User = new User();
