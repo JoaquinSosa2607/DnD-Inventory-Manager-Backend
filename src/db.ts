@@ -24,5 +24,6 @@ export const AppDataSource = new DataSource({
         User
     ],
     logging: true,
-    synchronize: true
+    synchronize: false,
+    migrations: ['/src/migrations/*.ts'],
 });

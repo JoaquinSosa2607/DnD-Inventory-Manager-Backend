@@ -4,7 +4,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typeorm": "ts-node --esm ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate -d ./src/db.ts ./src/migrations/InitMigration",
+    "migration:run": "npm run typeorm -- migration:run -d ./src/db.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d ./src/db.ts"
   },
   "author": "",
   "license": "ISC",
