@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Character } from "./Character";
-import { Campaign } from "./Campaign";
-import { TypeOfArmor } from "../helpers/enums";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Character} from "./Character";
+import {Campaign} from "./Campaign";
+import {TypeOfArmor} from "../helpers/enums";
 
 @Entity()
 export class Armor {
@@ -11,7 +11,7 @@ export class Armor {
     @Column()
     name: string;
 
-    @Column({ type: 'enum', enum: TypeOfArmor})
+    @Column({type: 'enum', enum: TypeOfArmor})
     type: TypeOfArmor;
 
     @Column()
@@ -21,12 +21,18 @@ export class Armor {
     strength: string;
 
     @Column()
-    stealth: string; 
+    stealth: string;
 
     @ManyToMany(() => Character, (character) => character.armors)
-    characters: Character[]; 
+    characters: Character[];
 
     @ManyToOne(() => Campaign, (campaign) => campaign.armor)
-    @JoinColumn({ name: "campaign_id"})
+    @JoinColumn({name: "campaign_id"})
     campaign: Campaign;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

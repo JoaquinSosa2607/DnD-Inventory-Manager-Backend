@@ -1,9 +1,8 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { Armor } from "./Armor";
 import { Campaign } from "./Campaign";
 import { User } from "./User";
 import { Classes, Species } from "../helpers/enums";
-
 
 @Entity()
 export class Character {
@@ -33,4 +32,10 @@ export class Character {
     @ManyToOne(() => User, (user) => user.character)
     @JoinColumn({ name: "user_id"})
     user: User;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

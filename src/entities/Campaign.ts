@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { Character } from "./Character";
 import { Armor } from "./Armor";
 
@@ -18,4 +18,10 @@ export class Campaign {
 
     @OneToMany(() => Armor, (armor) => armor.campaign)
     armor: Armor[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
